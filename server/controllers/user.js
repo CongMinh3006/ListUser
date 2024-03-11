@@ -3,6 +3,7 @@ const User = require('../models/user')
 
 const newUser = asyncHandle(async(req,res)=>{
     const {name, mssv} = req.body
+    console.log(req.body)
     if(!name || !mssv){
         throw new Error('Missing input')
     }
@@ -32,8 +33,8 @@ const getAllUser = asyncHandle(async(req,res)=>{
 })
 
 const deleteUser = asyncHandle(async(req,res)=>{
-    const {mid} = req.body
-    const response = await User.findByIdAndDelete(mid)
+    const {uid} = req.params
+    const response = await User.findByIdAndDelete(uid)
     return res.status(200).json({
         success: response ? true : false,
         mes: response ? "Delete user is successfully" : "Something went wrong"

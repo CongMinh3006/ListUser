@@ -4,6 +4,6 @@ const ctrls = require('../controllers/user')
 router.post('/newUser',ctrls.newUser)
 router.get('/',ctrls.getAllUser)
 router.post('/',ctrls.updateUser)
-router.delete('/',ctrls.deleteUser)
+router.delete('/:uid',ctrls.deleteUser)
 
 module.exports = router
