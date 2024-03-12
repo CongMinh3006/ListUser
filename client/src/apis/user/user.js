@@ -13,5 +13,5 @@ export const apiDeleteUser = (uid) => axios({
 export const apiAddUser = (data) => axios({
     url: `http://localhost:9000/api/user/newUser`,
     method: 'post',
-    params: data
+    data
 })

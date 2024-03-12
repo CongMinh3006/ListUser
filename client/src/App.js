@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 function App() {
 
   const [allUser, setAllUser] = useState(null)
-  const [user, setuser] = useState({
+  const [user, setUser] = useState({
     name: '',
     mssv: ''
   });
@@ -24,7 +24,12 @@ function App() {
   }
 
   const handleAdd = async() => {
-    
+    if(user.name.length < 1 || user.mssv.length < 1){
+      window.alert('Thiếu trường')
+    }else{
+      await apiAddUser(user)
+      setUpdate(!update)
+    }
   }
 
   useEffect(() => {
@@ -37,11 +42,21 @@ function App() {
       <div className="flex gap-5">
         <div className="flex flex-col">
           <label>Tên</label>
-          <input className="border p-2"></input>
+          <input 
+          type="text"
+          name="name"
+          value={user.name}
+          onChange={el => setUser(prev => ({...prev, name: el.target.value}))} 
+          className="border p-2"/>
         </div>
         <div className="flex flex-col">
           <label>Mssv</label>
-          <input className="border p-2"></input>
+          <input 
+          type="text"
+          name="mssv"
+          value={user.mssv}
+          onChange={el => setUser(prev => ({...prev, mssv: el.target.value}))} 
+          className="border p-2"/>
         </div>
       <button onClick={() => handleAdd()} className="border bg-green-600 px-3">Thêm</button>
       </div>
