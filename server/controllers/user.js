@@ -3,7 +3,6 @@ const User = require('../models/user')
 
 const newUser = asyncHandle(async(req,res)=>{
     const {name, mssv} = req.body
-    console.log(req.body)
     if(!name || !mssv){
         throw new Error('Missing input')
     }
@@ -15,9 +14,8 @@ const newUser = asyncHandle(async(req,res)=>{
 })
 
 const updateUser = asyncHandle(async(req,res)=>{
-    const { mid } = req.body
-    const { name, mssv } = req.body
-    const response = await User.findByIdAndUpdate(mid, {name, mssv})
+    const { uid, name, mssv } = req.body
+    const response = await User.findByIdAndUpdate(uid, {name, mssv})
     return res.status(200).json({
         success: response ? true : false,
         mes: response ? "Update user is successfully" : "Something went wrong"
@@ -25,7 +23,11 @@ const updateUser = asyncHandle(async(req,res)=>{
 })
 
 const getAllUser = asyncHandle(async(req,res)=>{
-    const response = await User.find()
+    const queries = {...req.query}
+    if(queries.name) queries.name = { $regex: queries.name, $options: 'i' }
+    if(queries.mssv) queries.mssv = { $regex: queries.mssv, $options: 'i' }
+    const queryCommand = User.find(queries)
+    const response = await queryCommand.exec()
     return res.status(200).json({
         success: response ? true : false,
         mes: response ? response : "Something went wrong"
